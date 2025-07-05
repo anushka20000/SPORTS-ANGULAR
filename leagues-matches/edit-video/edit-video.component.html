@@ -1,0 +1,315 @@
+<div
+  id="edit_video"
+  class="bg-body"
+  data-kt-drawer="true"
+  data-kt-drawer-name="edit_video"
+  data-kt-drawer-activate="true"
+  data-kt-drawer-overlay="true"
+  data-kt-drawer-width="{default:'300px', 'lg': '900px'}"
+  data-kt-drawer-direction="end"
+  data-kt-drawer-toggle="#edit_video_toggle"
+  data-kt-drawer-close="#edit_video_close"
+>
+  <div class="card shadow-none rounded-0 w-100">
+    <div class="card-header" id="edit_video_header">
+      <h3 class="card-title fw-bolder text-dark">Edit Video</h3>
+
+      <div class="card-toolbar">
+        <button
+          type="button"
+          class="btn btn-sm btn-icon btn-active-light-primary me-n5"
+          id="edit_video_close"
+          (click)="closemodal()"
+
+        >
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/arrows/arr061.svg'"
+            class="svg-icon svg-icon-1"
+          ></span>
+        </button>
+      </div>
+    </div>
+    <form [formGroup]="editVideo" (ngSubmit)="onInsert(editVideo.value)">
+      <div class="card-body position-relative" id="add_club_body">
+        <div
+          id="kt_activities_scroll"
+          class="position-relative scroll-y me-n5 pe-5"
+          data-kt-scroll="true"
+          data-kt-scroll-height="auto"
+          data-kt-scroll-wrappers="#add_club_body"
+          data-kt-scroll-dependencies="#add_club_header, #add_club_footer"
+          data-kt-scroll-offset="5px"
+        >
+
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >Title</label
+          >
+          <div class="col-lg-8 fv-row">
+            <input
+              type="text"
+              class="
+                  form-control form-control-lg form-control-solid
+                  mb-3 mb-lg-0
+                "
+              placeholder="video title"
+              name="title"
+              formControlName="title"
+            />
+            <div class="fv-plugins-message-container" *ngIf="editVideo.get('title')?.touched && editVideo.get('title')?.hasError('required')">
+              <div class="fv-help-block"> This is a required field</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Category</label>
+          <div class="col-lg-8 fv-row">
+            <select
+              class="form-select form-select-solid form-select-lg fw-bold"
+              name="category_id"
+              formControlName="category_id"
+              required
+            >
+              <option value="">Select a Category...</option>
+              <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+            </select>
+        
+            <div class="fv-plugins-message-container" *ngIf="editVideo.get('category_id')?.touched && editVideo.get('category_id')?.hasError('required')">
+              <div class="fv-help-block">This field is required</div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6">Previous Video</label>
+          <div class="col-lg-8 fv-row">
+            <select
+              class="form-select form-select-solid form-select-lg fw-bold"
+              name="previous_video_id"
+              formControlName="previous_video_id"
+            
+            >
+              <option value="">Select Previous Video...</option>
+              <option *ngFor="let video of previousVideos" [value]="video.id">
+                {{ video.title }}
+              </option>
+            </select>
+        
+            <!-- <div class="fv-plugins-message-container" *ngIf="editVideo.get('previous_video_id')?.touched && editVideo.get('previous_video_id')?.hasError('required')">
+              <div class="fv-help-block">This field is required</div>
+            </div> -->
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6">Next Video</label>
+          <div class="col-lg-8 fv-row">
+            <select
+              class="form-select form-select-solid form-select-lg fw-bold"
+              name="next_video_id"
+              formControlName="next_video_id"
+              
+            >
+              <option value="">Select Next Video...</option>
+              <option *ngFor="let video of previousVideos" [value]="video.id">
+                {{ video.title }}
+              </option>
+            </select>
+        
+            <!-- <div class="fv-plugins-message-container" *ngIf="editVideo.get('next_video_id')?.touched && editVideo.get('next_video_id')?.hasError('required')">
+              <div class="fv-help-block">This field is required</div>
+            </div> -->
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Description</label>
+          <div class="col-lg-8 fv-row">
+                  <textarea
+                    class="form-control form-control-lg form-control-solid"
+                    formControlName="description"
+                    placeholder="Type a short description of the video"
+                    name="description"
+                    required
+                    rows="3"
+                  ></textarea>
+            <div class="fv-plugins-message-container" *ngIf="editVideo.get('description')?.touched && editVideo.get('description')?.hasError('required')">
+              <div class="fv-help-block"> This is a required field</div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Date & Time</label>
+          <div class="col-lg-8 fv-row">
+            <input
+              type="datetime-local"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="Select date and time"
+              name="publish_date"
+              formControlName="publish_date"
+              required
+            />
+            <div class="fv-plugins-message-container" *ngIf="editVideo.get('publish_date')?.touched && editVideo.get('publish_date')?.hasError('required')">
+              <div class="fv-help-block"> This is a required field</div>
+            </div>
+          </div>
+        </div>
+
+       
+        <div class="row mb-6" *ngIf="formData?.thumbnail_image">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Uploaded Image</label>
+          <div class="col-lg-8 fv-row">
+            <div class="mb-3">
+              <img 
+                [src]="formData.thumbnail_image" 
+                alt="Match Poster" 
+                class="img-thumbnail" 
+                style="max-width: 200px; max-height: 200px;" 
+                *ngIf="formData.thumbnail_image" 
+              />
+            </div>              
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Image</label>
+          <div class="col-lg-8 fv-row">
+            <ngx-dropzone (change)="onSelectSquare($event, 1)" [multiple]="false" accept="image/jpeg,image/jpg,image/png"
+                          class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6">
+              <ngx-dropzone-label>Drop Image Here</ngx-dropzone-label>
+              <ngx-dropzone-image-preview *ngIf="squareFile" ngProjectAs="ngx-dropzone-preview" [removable]="true"
+                                          (removed)="onRemoveSquare(squareFile,1)" [file]="squareFile">
+                <ngx-dropzone-label>{{ squareFile.name }} ({{ squareFile.type }})</ngx-dropzone-label>
+              </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-2 col-form-label"
+          ></label
+          >
+          <!-- <div class="col-lg-10 fv-row"> -->
+            <div class="d-flex flex-column w-100 me-2">
+              <div class="d-flex flex-stack mb-2" *ngIf="squareProgress>0"><span class="text-muted me-2 fs-7 fw-bold">{{squareProgress}}%</span></div>
+              <div class="progress h-6px w-100" *ngIf="squareProgress>0">
+                <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="squareProgress"></div>
+              </div>
+            <!-- </div> -->
+          </div>
+        </div>
+
+       
+
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6"><span class="required">Video URL</span></label>
+          <div class="col-lg-8 fv-row">
+            <select
+              class="form-select form-select-solid form-select-lg fw-bold"
+              name="video_url"
+              formControlName="video_url"
+              required
+            >
+              <option value="">Select a Video...</option>
+              <option *ngFor="let state of states" [value]="state.output_file_link">{{ state.title }}</option>
+            </select>
+        
+            <div class="fv-plugins-message-container" *ngIf="editVideo.get('video_url')?.touched && editVideo.get('video_url')?.hasError('required')">
+              <div class="fv-help-block">video url is required</div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Type</label>
+          <div class="col-lg-8 fv-row">
+            <select
+              class="form-select form-select-solid form-select-lg fw-bold"
+              name="paid"
+              formControlName="paid"
+            >
+              <option value="0">Free</option>
+              <option value="1">Paid</option>
+            </select>
+           
+            <div class="fv-plugins-message-container" *ngIf="editVideo.get('paid')?.touched && editVideo.get('paid')?.hasError('required')">
+              <div class="fv-help-block"> This is a required field</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row mb-6" *ngIf="formData?.tv_banner">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Uploaded TV Banner</label>
+          <div class="col-lg-8 fv-row">
+            <div class="mb-3">
+              <img 
+                [src]="formData.tv_banner" 
+                alt="TV Banner Image" 
+                class="img-thumbnail" 
+                style="max-width: 200px; max-height: 200px;" 
+                *ngIf="formData.tv_banner" 
+              />
+            </div>              
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">TV Banner</label>
+          <div class="col-lg-8 fv-row">
+            <ngx-dropzone (change)="onSelectSquare($event, 2)" [multiple]="false" accept="image/jpeg,image/jpg,image/png"
+                          class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6">
+              <ngx-dropzone-label>Recommended dimensions (16:9)</ngx-dropzone-label>
+              <ngx-dropzone-image-preview *ngIf="squareFile4" ngProjectAs="ngx-dropzone-preview" [removable]="true"
+                                          (removed)="onRemoveSquare(squareFile4, 2)" [file]="squareFile4">
+                <ngx-dropzone-label>{{ squareFile4.name }} ({{ squareFile4.type }})</ngx-dropzone-label>
+              </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+          </div>
+          <!-- <div class="col-lg-10 fv-row"> -->
+            <div class="d-flex flex-column w-100 me-2">
+              <div class="d-flex flex-stack mb-2" *ngIf="squareProgress4>0"><span class="text-muted me-2 fs-7 fw-bold">{{squareProgress4}}%</span></div>
+              <div class="progress h-6px w-100" *ngIf="squareProgress4>0">
+                <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="squareProgress4"></div>
+              </div>
+            <!-- </div> -->
+          </div>
+
+        </div>
+        <!-- <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6"
+          ></label
+          > -->
+
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label fw-bold fs-6">Preview Seconds</label>
+            <div class="col-lg-8 fv-row">
+                <input
+                        type="text"
+                        class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                        placeholder="Preview Seconds"
+                        name="preview_seconds"
+                        formControlName="preview_seconds"
+                />
+              
+            </div>
+        </div>
+          <div class="col-lg-8 fv-row">
+            <button
+              [disabled]="!editVideo.valid"
+              class="btn btn-primary"
+              type="submit"
+            >
+              <ng-container *ngIf="!isLoading">Save Changes</ng-container>
+              <ng-container *ngIf="isLoading">
+            <span [style.display]="'block'" clas="indicator-progress">
+              Please wait...{{ " " }}
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+              </ng-container>
+            </button>
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+      <div id="add_club_footer" class="card-footer d-flex justify-content-end py-5 px-9">
+
+      </div>
+    </form>
+  </div>
+</div>

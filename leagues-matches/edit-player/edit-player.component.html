@@ -1,0 +1,264 @@
+<div
+  id="edit_player"
+  class="bg-body"
+  data-kt-drawer="true"
+  data-kt-drawer-name="edit_player_drawer"
+  data-kt-drawer-activate="true"
+  data-kt-drawer-overlay="true"
+  data-kt-drawer-width="{default:'300px', 'lg': '900px'}"
+  data-kt-drawer-direction="end"
+  data-kt-drawer-toggle="#edit_player_toggle"
+  data-kt-drawer-close="#edit_player_close"
+>
+  <div class="card shadow-none rounded-0 w-100">
+    <div class="card-header" id="edit_Player_header">
+      <h3 class="card-title fw-bolder text-dark">Edit Player</h3>
+
+      <div class="card-toolbar">
+        <button
+          type="button"
+          class="btn btn-sm btn-icon btn-active-light-primary me-n5"
+          id="edit_player_close"
+          (click)="closemodal()"
+
+        >
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/arrows/arr061.svg'"
+            class="svg-icon svg-icon-1"
+          ></span>
+        </button>
+      </div>
+    </div>
+    <form [formGroup]="editPlayer" (ngSubmit)="onInsert(editPlayer.value)">
+      <div class="card-body position-relative">
+        <!-- AIFF ID -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">AIFF ID</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="AIFF ID" formControlName="aiff_id" />
+            <div class="fv-plugins-message-container" *ngIf="editPlayer.get('aiff_id')?.touched && editPlayer.get('aiff_id')?.hasError('required')">
+              <div class="fv-help-block">This field is required</div>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Name -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Name</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="First Name" formControlName="name" />
+          </div>
+        </div>
+    
+        <!-- Last Name -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Last Name</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Last Name" formControlName="last_name" />
+          </div>
+        </div>
+    
+        <!-- Father's Name -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Father's Name</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Father's Name" formControlName="father_name" />
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Date of Birth</label>
+          <div class="col-lg-8 fv-row">
+            <input
+              type="date"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="Date of Birth"
+              formControlName="dob"
+            />
+            <div class="fv-plugins-message-container" *ngIf="editPlayer.get('dob')?.touched && editPlayer.get('dob')?.hasError('required')">
+              <div class="fv-help-block">This field is required</div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-6" *ngIf="formData?.profile_image">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Uploaded Profile Image</label>
+          <div class="col-lg-8 fv-row">
+            <div class="mb-3">
+              <img 
+                [src]="formData.profile_image" 
+                alt="Player Profile Picture" 
+                class="img-thumbnail" 
+                style="max-width: 200px; max-height: 200px;" 
+                *ngIf="formData.profile_image" 
+              />
+            </div>              
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Profile Image</label>
+          <div class="col-lg-8 fv-row">
+            <ngx-dropzone (change)="onSelectSquare($event)" [multiple]="false" accept="image/jpeg,image/jpg,image/png"
+                          class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 square-box">
+              <ngx-dropzone-label>Ratio (1:1), Min. 500x500</ngx-dropzone-label>
+              <ngx-dropzone-image-preview *ngIf="squareFile" ngProjectAs="ngx-dropzone-preview" [removable]="true"
+                                          (removed)="onRemoveSquare(squareFile)" [file]="squareFile">
+                <ngx-dropzone-label>{{ squareFile.name }} ({{ squareFile.type }})</ngx-dropzone-label>
+              </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+          </div>
+        </div>
+        <!-- Nationality -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Nationality</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Nationality" formControlName="nationality" />
+          </div>
+        </div>
+    
+        <!-- Birth Country -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6">Birth Country</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Birth Country" formControlName="birth_country" />
+          </div>
+        </div>
+    
+        <!-- Birth State -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6">Birth State</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Birth State" formControlName="birth_state" />
+          </div>
+        </div>
+    
+        <!-- Position -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Position</label>
+          <div class="col-lg-8 fv-row">
+            <select class="form-select form-select-solid form-select-lg" formControlName="position_id">
+              <option value="">Select Position</option>
+              <option *ngFor="let position of positions" [value]="position.id">{{ position.name }}</option>
+            </select>
+          </div>
+        </div>
+    
+        <!-- Club -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Club</label>
+          <div class="col-lg-8 fv-row">
+            <select class="form-select form-select-solid form-select-lg" formControlName="club_id">
+              <option value="">Select Club</option>
+              <option *ngFor="let club of clubs" [value]="club.id">{{ club.name }}</option>
+            </select>
+          </div>
+        </div>
+        <!-- Jersey Name -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Jersey Number</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Jersey Name" formControlName="jersey_no" />
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Jersey Name</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Jersey Name" formControlName="jersey_name" />
+          </div>
+        </div>
+    
+        
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Rank</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Rank" formControlName="rank" />
+            <div class="fv-plugins-message-container" *ngIf="editPlayer.get('rank')?.touched && editPlayer.get('rank')?.hasError('required')">
+              <div class="fv-help-block">This field is required</div>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Goal Score -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Goal Score</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Goal Score" formControlName="goal_score" />
+          </div>
+        </div>
+    
+        <!-- Goal Conceived -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Goal Conceived</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Goal Conceived" formControlName="goal_conceived" />
+          </div>
+        </div>
+    
+        <!-- Penalty Score -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Penalty Score</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Penalty Score" formControlName="penalty_score" />
+          </div>
+        </div>
+    
+        <!-- Assists -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Assists</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Assists" formControlName="assists" />
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Total Match</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Total Match" formControlName="total_match" />
+          </div>
+        </div>
+    
+        <!-- Total Attempts -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Total Attempts</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Total Attempts" formControlName="total_attempts" />
+          </div>
+        </div>
+    
+        <!-- Total Distance Covered -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Total Distance Covered</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Total Distance Covered (in meters)" formControlName="total_distance_covered" />
+          </div>
+        </div>
+    
+        <!-- Total Followers -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Total Followers</label>
+          <div class="col-lg-8 fv-row">
+            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Total Followers" formControlName="total_followers" />
+          </div>
+        </div>
+        <!-- Summary -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Summary</label>
+          <div class="col-lg-8 fv-row">
+            <textarea class="form-control form-control-lg form-control-solid" rows="3" formControlName="summery"></textarea>
+          </div>
+        </div>
+    
+        <!-- Detailed Bio -->
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Detailed Bio</label>
+          <div class="col-lg-8 fv-row">
+            <textarea class="form-control form-control-lg form-control-solid" rows="5" formControlName="detail"></textarea>
+          </div>
+        </div>
+        <!-- Submit Button -->
+        <div class="row mb-6">
+          <div class="col-lg-8 offset-lg-4">
+            <button class="btn btn-primary" type="submit" [disabled]="!editPlayer.valid">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

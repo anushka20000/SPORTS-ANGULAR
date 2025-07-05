@@ -1,0 +1,147 @@
+<div
+  id="add_group_drawer"
+  class="bg-body"
+  data-kt-drawer="true"
+  data-kt-drawer-name="add_group"
+  data-kt-drawer-activate="true"
+  data-kt-drawer-overlay="true"
+  data-kt-drawer-width="{default:'300px', 'lg': '900px'}"
+  data-kt-drawer-direction="end"
+  data-kt-drawer-toggle="#add_group_toggle"
+  data-kt-drawer-close="#add_group_close"
+>
+  <div class="card shadow-none rounded-0 w-100">
+    <div class="card-header" id="add_group_header">
+      <h3 class="card-title fw-bolder text-dark">Add Group for League: {{leagueName}}</h3>
+
+      <div class="card-toolbar">
+        <button
+          type="button"
+          class="btn btn-sm btn-icon btn-active-light-primary me-n5"
+          id="add_group_close"
+        >
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/arrows/arr061.svg'"
+            class="svg-icon svg-icon-1"
+          ></span>
+        </button>
+      </div>
+    </div>
+
+      <div class="card-body position-relative" id="add_group_body">
+        <div
+          id="kt_activities_scroll"
+          class="position-relative scroll-y me-n5 pe-5"
+          data-kt-scroll="true"
+          data-kt-scroll-height="auto"
+          data-kt-scroll-wrappers="#add_group_body"
+          data-kt-scroll-dependencies="#add_group_header, #add_group_footer"
+          data-kt-scroll-offset="5px"
+        >
+          <form [formGroup]="groupForm" (ngSubmit)="onInsert(groupForm.value)">
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label required fw-bold fs-6"
+            >Name</label
+            >
+            <div class="col-lg-8 fv-row">
+              <input
+                type="text"
+                class="
+                    form-control form-control-lg form-control-solid
+                    mb-3 mb-lg-0
+                  "
+                placeholder="Club name"
+                name="name"
+                formControlName="name"
+              />
+              <div class="fv-plugins-message-container" *ngIf="groupForm.get('name')?.touched && groupForm.get('name')?.hasError('required')">
+                <div class="fv-help-block"> This is a required field</div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label fw-bold fs-6"
+            ></label
+            >
+            <div class="col-lg-8 fv-row">
+              <button
+                [disabled]="!groupForm.valid"
+                class="btn btn-primary"
+                type="submit"
+              >
+                <ng-container *ngIf="!isLoading">Save Changes</ng-container>
+                <ng-container *ngIf="isLoading">
+              <span [style.display]="'block'" clas="indicator-progress">
+                Please wait...{{ " " }}
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
+                </ng-container>
+              </button>
+            </div>
+          </div>
+          </form>
+
+          <div class="row mb-6">
+            <div class="card-header">
+              <h3 class="card-title fw-bolder text-dark text-muted">Group A</h3>
+              <div class="card-toolbar">
+                <ng-select [items]="teams$ | async"
+                           name="team_id"
+                           (change)="fetchTeams($event, 'A')"
+                           bindLabel="name"
+                           bindValue="id"
+                           typeToSearchText="Please enter 4 or more characters"
+                           [minTermLength]="4"
+                           [typeahead]="teamsinput$"
+                           formControlName="team_id"
+                >
+                </ng-select>
+                <button
+                  type="button"
+                  class="btn btn-sm  btn-primary"
+                >Add Team
+                </button>
+              </div>
+            </div>
+
+            <div class="separator"></div>
+          </div>
+          <div class="row mb-6">
+            <div class="table-responsive">
+              <!-- begin::Table -->
+              <table
+                class="
+            table table-row-dashed table-row-gray-200
+            align-middle
+            gs-0
+            gy-4
+          "
+              >
+                <!-- begin::Table head -->
+                <thead>
+                <tr class="border-0">
+                  <th class="p-0 min-w-150px">Team</th>
+                  <th class="p-0 "></th>
+                </tr>
+                </thead>
+                <!-- end::Table head -->
+                <!-- begin::Table body -->
+                <tbody>
+                </tbody>
+              </table>
+              <!-- end::Table -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div id="add_group_footer" class="card-footer d-flex justify-content-end py-5 px-9">
+      </div>
+  </div>
+</div>

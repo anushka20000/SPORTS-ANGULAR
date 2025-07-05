@@ -1,0 +1,158 @@
+<div
+  id="edit_sport"
+  class="bg-body"
+  data-kt-drawer="true"
+  data-kt-drawer-name="edit_sport"
+  data-kt-drawer-activate="true"
+  data-kt-drawer-overlay="true"
+  data-kt-drawer-width="{default:'300px', 'lg': '900px'}"
+  data-kt-drawer-direction="end"
+  data-kt-drawer-toggle="#edit_sport_toggle"
+  data-kt-drawer-close="#edit_sport_close"
+>
+  <div class="card shadow-none rounded-0 w-100">
+    <div class="card-header" id="edit_sport_header">
+      <h3 class="card-title fw-bolder text-dark">Edit Club</h3>
+
+      <div class="card-toolbar">
+        <button
+          type="button"
+          class="btn btn-sm btn-icon btn-active-light-primary me-n5"
+          id="edit_sport_close"
+          (click)="closemodal()"
+
+        >
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/arrows/arr061.svg'"
+            class="svg-icon svg-icon-1"
+          ></span>
+        </button>
+      </div>
+    </div>
+    <form [formGroup]="editClub" (ngSubmit)="onInsert(editClub.value)">
+      <div class="card-body position-relative" id="add_sport_body">
+        <div
+          id="kt_activities_scroll"
+          class="position-relative scroll-y me-n5 pe-5"
+          data-kt-scroll="true"
+          data-kt-scroll-height="auto"
+          data-kt-scroll-wrappers="#add_sport_body"
+          data-kt-scroll-dependencies="#add_sport_header, #add_sport_footer"
+          data-kt-scroll-offset="5px"
+        >
+
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label required fw-bold fs-6"
+            >Name</label
+            >
+            <div class="col-lg-8 fv-row">
+              <input
+                type="text"
+                class="
+                    form-control form-control-lg form-control-solid
+                    mb-3 mb-lg-0
+                  "
+                placeholder="Club name"
+                name="name"
+                formControlName="name"
+              />
+              <div class="fv-plugins-message-container" *ngIf="editClub.get('name')?.touched && editClub.get('name')?.hasError('required')">
+                <div class="fv-help-block"> This is a required field</div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-6" *ngIf="formData?.image">
+            <label class="col-lg-4 col-form-label required fw-bold fs-6">Uploaded Image</label>
+            <div class="col-lg-8 fv-row">
+              <div class="mb-3">
+                <img 
+                  [src]="formData?.image" 
+                  alt="Club Logo" 
+                  class="img-thumbnail" 
+                  style="max-width: 200px; max-height: 200px;" 
+                  *ngIf="formData?.image" 
+                />
+              </div>              
+            </div>
+          </div>
+           <div class="row mb-6">
+            <label class="col-lg-4 col-form-label fw-bold fs-6">Scoring Type</label>
+            <div class="col-lg-8 fv-row">
+              <select
+                class="form-select form-select-solid form-select-lg fw-bold"
+                name="scoring_type"
+                formControlName="scoring_type"
+              >
+                <option value="1">Football</option>
+                <option value="2">Handball</option>
+                <option value="3">Cricket</option>
+
+              </select>
+<!--              
+              <div class="fv-plugins-message-container" *ngIf="addClub.get('scoring_type')?.touched && addClub.get('scoring_type')?.hasError('required')">
+                <div class="fv-help-block"> This is a required field</div>
+              </div> -->
+            </div>
+          </div>
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label required fw-bold fs-6">Update Image</label>
+            <div class="col-lg-8 fv-row">
+              
+              <ngx-dropzone (change)="onSelectSquare($event)" [multiple]="false" accept="image/jpeg,image/jpg,image/png"
+                            class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6">
+                <ngx-dropzone-label>Ratio 140X184</ngx-dropzone-label>
+                <ngx-dropzone-image-preview *ngIf="squareFile" ngProjectAs="ngx-dropzone-preview" [removable]="true"
+                                            (removed)="onRemoveSquare(squareFile)" [file]="squareFile">
+                  <ngx-dropzone-label>{{ squareFile.name }} ({{ squareFile.type }})</ngx-dropzone-label>
+                </ngx-dropzone-image-preview>
+              </ngx-dropzone>
+            </div>
+          </div>
+          <div class="row mb-6">
+            <label class="col-lg-2 col-form-label"
+            ></label
+            >
+            <div class="col-lg-10 fv-row">
+              <div class="d-flex flex-column w-100 me-2">
+                <div class="d-flex flex-stack mb-2" *ngIf="squareProgress>0"><span class="text-muted me-2 fs-7 fw-bold">{{squareProgress}}%</span></div>
+                <div class="progress h-6px w-100" *ngIf="squareProgress>0">
+                  <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="squareProgress"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+         
+
+
+
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label fw-bold fs-6"
+            ></label
+            >
+            <div class="col-lg-8 fv-row">
+              <button
+                [disabled]="!editClub.valid"
+                class="btn btn-primary"
+                type="submit"
+              >
+                <ng-container *ngIf="!isLoading">Save Changes</ng-container>
+                <ng-container *ngIf="isLoading">
+              <span [style.display]="'block'" clas="indicator-progress">
+                Please wait...{{ " " }}
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
+                </ng-container>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="add_sport_footer" class="card-footer d-flex justify-content-end py-5 px-9">
+
+      </div>
+    </form>
+  </div>
+</div>
