@@ -1,0 +1,116 @@
+<div class="card mb-5 mb-xl-8">
+  <div class="card-header border-0 pt-5">
+    <h3 class="card-title align-items-start flex-column">
+      <span class="card-label fw-bolder fs-3 mb-1">Manage Courses Screen</span>
+      <span class="text-muted mt-1 fw-bold fs-7">Manage which courses are visible and in what order in courses tab of  Mobile or TV</span>
+    </h3>
+
+  </div>
+  <!-- end::Header -->
+  <!-- begin::Body -->
+  <div class="card-body py-3">
+    <!-- begin::Table container -->
+    <div class="row mb-10 m-auto">
+      <!-- begin::Table -->
+      <form (ngSubmit)="onInsert(addForm.value)" [formGroup]="addForm">
+        <div class="row mb-6">
+          <label class="col-lg-3 col-form-label required fw-bold fs-6">Select Course</label>
+          <div class="col-lg-5 fv-row">
+            <ng-select [items]="courses$ | async"
+                       name="course_id"
+                       bindLabel="name"
+                       bindValue="id"
+                       typeToSearchText="Please enter 4 or more characters"
+                       [minTermLength]="4"
+                       [typeahead]="courseInput$"
+                       formControlName="course_id">
+            </ng-select>
+
+          </div>
+          <div class="col-lg-4 fv-row">
+            <button
+              [disabled]="!addForm.valid"
+              class="btn btn-primary"
+              type="submit"
+            >
+              <ng-container *ngIf="!isLoading">Add</ng-container>
+              <ng-container *ngIf="isLoading">
+              <span [style.display]="'block'" clas="indicator-progress">
+                Please wait...{{ " " }}
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
+              </ng-container>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- end::Table -->
+    </div>
+
+    <div class="table-responsive">
+      <!-- begin::Table -->
+      <table
+        class="
+            table table-row-dashed table-row-gray-200
+            align-middle
+            gs-0
+            gy-4
+          "
+      >
+        <!-- begin::Table head -->
+        <thead>
+        <tr class="border-0">
+          <th class="p-0 w-150px"></th>
+          <th class="p-0 min-w-150px"></th>
+          <th class="p-0 min-w-150px"></th>
+        </tr>
+        </thead>
+        <!-- end::Table head -->
+        <!-- begin::Table body -->
+        <tbody (dragulaModelChange)="onChangeOrder($event)" [(dragulaModel)]="courseList" dragula="COURSE_FEED">
+        <tr *ngFor="let courseItem of courseList">
+          <td>
+            <div class="symbol symbol-100px me-2">
+                  <span class="symbol-label">
+                    <img
+                      [src]="courseItem.square_image"
+                      [ngClass]="courseItem.visible?'h-100 align-self-center':'disabled h-100 align-self-center'"
+
+                      alt=""
+                    />
+                  </span>
+            </div>
+          </td>
+          <td>
+            <span [ngClass]="courseItem.visible?'text-dark fw-bolder text-hover-primary mb-1 fs-6'
+            :'text-muted fw-bolder text-hover-primary mb-1 fs-6'">{{courseItem.name}}</span>
+          </td>
+
+          <td class="text-end">
+            <button (click)="onDelete(courseItem)" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary me-1">
+                  <span [inlineSVG]="'./assets/media/icons/tutopia/trash.svg'"
+                        class="svg-icon svg-icon-2"
+                  ></span>
+            </button>
+
+            <button (click)="toggleVisible(courseItem)" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary">
+                  <span [inlineSVG]="courseItem.visible?'./assets/media/icons/tutopia/invisible.svg':'./assets/media/icons/tutopia/visible.svg'"
+                    class="svg-icon svg-icon-2"
+                  ></span>
+            </button>
+          </td>
+        </tr>
+
+        </tbody>
+        <!-- end::Table body -->
+      </table>
+    </div>
+
+  </div>
+  <tutopia-app-modal #modal_window [modalConfig]="modalConfig">
+    {{modalBody}}
+  </tutopia-app-modal>
+</div>

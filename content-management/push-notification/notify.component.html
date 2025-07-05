@@ -1,0 +1,75 @@
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title fw-bolder text-dark">Send Push Notification</h3>
+  </div>
+  <form [formGroup]="pushNotificationForm" (ngSubmit)="sendNotification()">
+    <div class="card-body">
+      <!-- Topic -->
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label fw-bold fs-6">Topic</label>
+        <div class="col-lg-8 fv-row">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            formControlName="topic"
+            placeholder="Enter Topic"
+          />
+        </div>
+      </div>
+      
+      <!-- Title -->
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label fw-bold fs-6">Title</label>
+        <div class="col-lg-8 fv-row">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            formControlName="title"
+            placeholder="Enter Title"
+          />
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label fw-bold fs-6">Message</label>
+        <div class="col-lg-8 fv-row">
+          <textarea
+            class="form-control form-control-lg form-control-solid"
+            formControlName="message"
+            placeholder="Enter Message"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6">Logo Image</label>
+        <div class="col-lg-8 fv-row">
+          <ngx-dropzone (change)="onSelectSquare($event)" [multiple]="false" accept="image/jpeg,image/jpg,image/png"
+                        class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 square-box">
+            <!-- <ngx-dropzone-label>Ratio (1:1), Min. 500x500</ngx-dropzone-label> -->
+            <ngx-dropzone-label>Drop image here</ngx-dropzone-label>
+
+            <ngx-dropzone-image-preview *ngIf="squareFile" ngProjectAs="ngx-dropzone-preview" [removable]="true"
+                                        (removed)="onRemoveSquare(squareFile)" [file]="squareFile">
+              <ngx-dropzone-label>{{ squareFile.name }} ({{ squareFile.type }})</ngx-dropzone-label>
+            </ngx-dropzone-image-preview>
+          </ngx-dropzone>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-end">
+      <button
+        type="submit"
+        [disabled]="!pushNotificationForm.valid || isLoading"
+        class="btn btn-primary"
+      >
+        <ng-container *ngIf="!isLoading">Send Notification</ng-container>
+        <ng-container *ngIf="isLoading">
+          <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+          Sending...
+        </ng-container>
+      </button>
+    </div>
+  </form>
+</div>

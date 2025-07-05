@@ -1,0 +1,134 @@
+<div
+  id="add_item_drawer"
+  class="bg-body"
+  data-kt-drawer="true"
+  data-kt-drawer-name="add_item"
+  data-kt-drawer-activate="true"
+  data-kt-drawer-overlay="true"
+  data-kt-drawer-width="{default:'300px', 'lg': '900px'}"
+  data-kt-drawer-direction="end"
+  data-kt-drawer-toggle="#add_item_toggle"
+  data-kt-drawer-close="#add_item_close"
+>
+  <div class="card shadow-none rounded-0 w-100">
+    <div class="card-header" id="add_item_header">
+      <h3 class="card-title fw-bolder text-dark">Add Home Item</h3>
+      <div class="card-toolbar">
+        <button
+          type="button"
+          class="btn btn-sm btn-icon btn-active-light-primary me-n5"
+          id="add_item_close"
+        >
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/arrows/arr061.svg'"
+            class="svg-icon svg-icon-1"
+          ></span>
+        </button>
+      </div>
+    </div>
+    <form [formGroup]="addItemForm" (ngSubmit)="onInsert(addItemForm.value)">
+      <div class="card-body position-relative" id="add_item_body">
+        <div
+          id="kt_activities_scroll"
+          class="position-relative scroll-y me-n5 pe-5"
+          data-kt-scroll="true"
+          data-kt-scroll-height="auto"
+          data-kt-scroll-wrappers="#add_item_body"
+          data-kt-scroll-dependencies="#add_item_header, #add_item_footer"
+          data-kt-scroll-offset="5px"
+        >
+          <!-- Title -->
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label required fw-bold fs-6">Title</label>
+            <div class="col-lg-8 fv-row">
+              <input
+                type="text"
+                class="form-control form-control-lg form-control-solid"
+                placeholder="Enter Title"
+                name="title"
+                formControlName="title"
+              />
+              <div
+                class="fv-plugins-message-container"
+                *ngIf="addItemForm.get('title')?.touched && addItemForm.get('title')?.hasError('required')"
+              >
+                <div class="fv-help-block"> This is a required field</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Type Dropdown -->
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label required fw-bold fs-6">Type</label>
+            <div class="col-lg-8 fv-row">
+              <select
+                class="form-select form-select-solid form-select-lg fw-bold"
+                name="type"
+                formControlName="type"
+                (change)="onTypeChange($event)"
+              >
+                <option value="">Select Type...</option>
+                <option value="1">Hero Banner</option>
+                <option value="2">Highlights</option>
+                <option value="3">Upcoming Matches</option>
+                <option value="4">Full Match Replays</option>
+                <option value="5">Key Moments</option>
+                <option value="6">Players in Spotlight</option>
+                <option value="7">VOD Content</option>
+              </select>
+              <div
+                class="fv-plugins-message-container"
+                *ngIf="addItemForm.get('type')?.touched && addItemForm.get('type')?.hasError('required')"
+              >
+                <div class="fv-help-block"> This is a required field</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- League Dropdown -->
+          <div class="row mb-6" *ngIf="showLeagueDropdown">
+            <label class="col-lg-4 col-form-label fw-bold fs-6">League</label>
+            <div class="col-lg-8 fv-row">
+              <select
+                class="form-select form-select-solid form-select-lg fw-bold"
+                name="league_id"
+                formControlName="league_id"
+              >
+                <option value="">Select League...</option>
+                <option *ngFor="let league of leagues" [value]="league.id">
+                  {{ league.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Video Category Dropdown -->
+          <div class="row mb-6" *ngIf="showVideoCategoryDropdown">
+            <label class="col-lg-4 col-form-label fw-bold fs-6">Video Category</label>
+            <div class="col-lg-8 fv-row">
+              <select
+                class="form-select form-select-solid form-select-lg fw-bold"
+                name="video_category_id"
+                formControlName="video_category_id"
+              >
+                <option value="">Select Video Category...</option>
+                <option *ngFor="let category of videoCategories" [value]="category.id">
+                  {{ category.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="add_item_footer" class="card-footer d-flex justify-content-end py-5 px-9">
+        <button
+          [disabled]="!addItemForm.valid"
+          class="btn btn-primary"
+          type="submit"
+        >
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

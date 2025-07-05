@@ -1,0 +1,133 @@
+<div class="card mb-5 mb-xl-8">
+  <div class="card-header border-0 pt-5">
+    <h3 class="card-title align-items-start flex-column">
+      <span class="card-label fw-bolder fs-3 mb-1">Manage Transactions</span>
+      <!-- <span class="text-muted mt-1 fw-bold fs-7">Upcoming, live and completed matches</span> -->
+    </h3>
+   
+  </div>
+  <!-- end::Header -->
+  <!-- begin::Body -->
+  <div class="card-body py-3">
+    <!-- begin::Table container -->
+    <div class="grid-control ps-15 mt-3">
+      <div class="col-lg-12 text-end">
+        <button
+          (click)="download()"
+          type="button"
+          aria-controls="plans_table"
+          class="btn border-0 px-5 py-3 rounded-4 fw-semibold shadow-lg bg-white bg-opacity-10 text-dark position-relative overflow-hidden d-inline-flex align-items-center gap-2"
+          style="
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+          "
+          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.15)'"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 10px rgba(0,0,0,0.1)'"
+        >
+          <i class="bi bi-file-earmark-excel-fill fs-4 text-success"></i>
+          <span>Export to Excel</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="grid-control">
+      <div class="row mt-5 mb-5">
+    
+        <!-- Date Range -->
+        <div class="col-lg-5 fv-row">
+          <label for="from" class="fw-bold fs-6 me-1">From:</label>
+          <input
+            id="from"
+            [(ngModel)]="start_date"
+            name="start_date"
+            class="form-control form-control-solid-bg mw-150px d-inline-block me-5"
+            type="date"
+            (change)="refreshGrid()"
+          />
+    
+          <label for="to" class="fw-bold fs-6 me-1">To:</label>
+          <input
+            id="to"
+            [(ngModel)]="end_date"
+            name="end_date"
+            [min]="start_date"
+            class="form-control form-control-solid-bg mw-150px d-inline-block me-5"
+            type="date"
+            (change)="refreshGrid()"
+          />
+        </div>
+
+          <!-- Clear Button -->
+          <div class="col-lg-2">
+            <button
+              *ngIf="start_date || end_date "
+              class="btn btn-primary"
+              type="button"
+              (click)="clearFilters()">
+              Clear
+            </button>
+          </div>
+    
+        <!-- Payment Status Filter -->
+        <div class="col-lg-2">
+          <select
+            [(ngModel)]="payment_status"
+            name="payment_status"
+            (change)="refreshGrid()"
+            class="form-select form-select-solid form-select-lg fw-bold me-2 d-inline-block w-230px">
+            <option value="">Select Payment Status</option>
+            <option value="0">Unpaid</option>
+            <option value="1">Paid</option>
+          </select>
+        </div>
+    
+        <!-- Subscription Plan Filter -->
+        <div class="col-lg-3">
+          <select
+            [(ngModel)]="subscription_plan_id"
+            name="subscription_plan_id"
+            (change)="refreshGrid()"
+            class="form-select form-select-solid form-select-lg fw-bold me-2 d-inline-block w-230px">
+            <option value="">Select Subscription Plan</option>
+            <option *ngFor="let plan of subscriptionPlans" [value]="plan.id">
+              {{ plan.plan_name }}
+            </option>
+          </select>
+        </div>
+    
+      
+    
+      </div>
+    </div>
+     <div class="grid-control">
+      <div class="row mt-5 mb-5">    
+        <!-- Subscription Plan Filter -->
+        <div class="col-lg-3">
+          <select
+            [(ngModel)]="league_id"
+            name="league_id"
+            (change)="refreshGrid()"
+            class="form-select form-select-solid form-select-lg fw-bold me-2 d-inline-block w-230px">
+            <option value="">Select league</option>
+            <option *ngFor="let league of leagues" [value]="league.id">
+              {{ league.name }}
+            </option>
+          </select>
+        </div>
+    
+      
+    
+      </div>
+    </div>
+    <div class="table-responsive">
+      <!-- begin::Table -->
+      <table id="plans_table" datatable [dtOptions]="dtOptions" class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4"></table>
+      <!-- end::Table -->
+    </div>
+
+  </div>
+  <tutopia-app-modal #modal_window [modalConfig]="modalConfig">
+
+  </tutopia-app-modal>
+</div>
